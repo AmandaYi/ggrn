@@ -1,0 +1,29 @@
+import React from 'react';
+import {StatusBar, StyleSheet, View,} from 'react-native';
+
+import {AppNavigator} from "./router/appNavigator"
+import TeamPage from './pages/admission/team';
+export default class App extends React.Component {
+    render() {
+        return (
+            <View style={styles.container}>
+                <StatusBar
+                    translucent={true}
+                    backgroundColor="transparent"
+                    barStyle="dark-content"
+                    StatusBarStyle="dark-content"
+                />
+ 
+                <AppNavigator/> 
+            </View>
+        )
+    }
+}
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+
+})

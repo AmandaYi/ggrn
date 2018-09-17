@@ -1,0 +1,137 @@
+import React, {Component} from 'react';
+import {MapView,MultiPoint } from 'react-native-amap3d'
+import {StyleSheet,View,Text,TouchableHighlight,Alert} from "react-native";
+
+import { Geolocation } from "react-native-amap-geolocation"
+import {width,rx } from "../../common/variable"
+import MainNav from "./components/mainMenu"
+
+export default class Home extends Component<Props> {
+    constructor(Props){
+        super();
+        this.state = {
+            coordinate: {
+                latitude: 39.91096,
+                longitude: 116.67396,
+            },
+            zoomLevel: 14,
+            currMenu:'NJ'
+        }
+     }
+
+
+    _points = Array(1000).fill(0).map(i => ({
+        latitude: 39.5 + Math.random(),
+        longitude: 116 + Math.random(),
+    }))
+
+    _onItemPress = point => Alert.alert(point.latitude.toString())
+
+    render() {
+        const {navigation} = this.props
+        return (
+            <View style={styles.container}>
+                <MapView style={StyleSheet.absoluteFill}
+                         zoomLevel={this.state.zoomLevel}
+                         coordinate={this.state.coordinate}
+                         >
+                        <MultiPoint
+                            points={this._points}
+                            onItemPress={this._onItemPress}
+                        />
+
+                </MapView>
+
+                <MainNav navigation={navigation} > </MainNav>
+
+
+
+            </View>
+        );
+    }
+
+    componentDidMount() {
+        Geolocation.init({
+            android: "043b24fe18785f33c491705ffe5b6935",
+            ios: "043b24fe18785f33c491705ffe5b6935"
+        })
+
+        Geolocation.setOptions({
+            interval: 8000,
+            distanceFilter: 20
+        })
+        Geolocation.addLocationListener(location => {
+            this.setState({
+                coordinate :{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                }
+            })
+            Geolocation.stop()
+        })
+        Geolocation.start()
+
+    }
+
+    componentWillUnmount(){
+        Geolocation.stop()
+    }
+
+}
+
+
+
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    mainNav: {
+        width:width,
+        height:rx(198),
+        position:'absolute',
+        top:0,
+        backgroundColor:'#FFF',
+
+    },
+    searchBox:{
+        marginHorizontal:rx(30),
+        height:rx(88),
+        flexDirection:'row',
+        marginTop:rx(40),
+        alignItems:'center',
+        justifyContent:'space-between',
+    },
+    mainMenu:{
+      flexDirection:'row',
+      height:rx(70),
+      alignItems:'center',
+        marginHorizontal: rx(30),
+    },
+
+    menu:{
+        marginRight:rx(68),
+        paddingVertical:rx(11),
+        backgroundColor:'#FFF'
+    },
+    menuText:{
+        fontSize:rx(30)
+    },
+    currMenuText:{
+        color:'#fff'
+    },
+    currMenu:{
+        backgroundColor:'#00AF00',
+        paddingHorizontal:rx(18),
+        borderRadius:rx(35),
+    },
+    iconFont: {
+        fontFamily:'iconfont',
+        fontSize:rx(42),
+
+    }
+
+});
+
+

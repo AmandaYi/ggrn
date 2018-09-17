@@ -1,0 +1,94 @@
+import React, { Component } from 'react'
+import {
+  TouchableHighlight,
+  StyleSheet,
+  Text,
+  TextInput,
+  Dimensions,
+  View,
+} from 'react-native'
+import {commonStyle} from './style/commonStyle'
+import  globalStyle,{
+  width,
+  rx
+} from "../../common/variable"
+
+export default class Register extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      telPhone: '',
+    }
+  }
+
+
+  render() {
+    const {navigation} = this.props
+    return (
+      <View style={commonStyle.pageBox}>
+        <Text style={styles.title}>新用户注册</Text>
+        <Text style={styles.subTitle}>输入手机号，创建账户</Text>
+        {/* 输入手机号 */}
+        <View
+          style={[commonStyle.inputBox, {marginTop:rx(50)}]}>
+          <Text style={commonStyle.leftTitle}>
+           手机号 :
+          </Text>
+          <TextInput
+            style={commonStyle.input}
+            secureTextEntry = {false}
+            placeholder={'请输入您的手机号'}
+            placeholderTextColor={ '#999' }
+            underlineColorAndroid={'transparent'}
+            value={this.state.telPhone}
+            onChangeText = {text => {
+              this.setState({
+                telPhone: text
+              })
+            }}
+          />
+        </View>
+        {/* 下一步按钮 */}
+        <TouchableHighlight
+          style={ commonStyle.button }
+          underlayColor='gray'
+          onPress = {() => {
+            //  首先做检验，不对给出提示，对，检查手机号是否已经注册，注册过给出提示，没注册过，记录手机号，点击下一步跳转页面并发送验证码
+              // ToastAndroid.show('返回首页', ToastAndroid.SHORT)
+              navigation.navigate('RegisterNext', {'telPhone': this.state.telPhone})
+
+          }} >
+          <Text style={commonStyle.btText}>下一步</Text>
+        </TouchableHighlight>
+        {/* 同意协议 */}
+        <Text style={styles.agree}>点击“下一步”，即表示您同意协议</Text>
+        <Text style={[styles.agree, { color: '#2dbb55', textDecorationLine: 'underline'  }]}
+          onPress={() => {
+            alert('跳转协议页面！')
+        }
+        }>用户服务协议</Text>
+      </View>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: rx(44),
+    color: '#323232',
+    marginTop: rx(34),
+    width: width - rx(80),
+    textAlign: 'left'
+  },
+  subTitle:{
+    fontSize: rx(30),
+    color: '#333',
+    width: width-globalStyle.appHorizontal*2,
+    textAlign: 'left',
+    marginBottom: rx(100),
+  },
+  agree: {
+    color: '#2d2d2d',
+    fontSize: rx(24),
+  }
+})

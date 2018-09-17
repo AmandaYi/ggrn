@@ -1,0 +1,120 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Text, View, TouchableHighlight, StyleSheet} from 'react-native'
+import {rx, width} from "../../../common/variable";
+import {connect} from 'react-redux'
+import {setCurrMenu } from '../../../actions/appAction'
+
+const MenuItem = (props) => {
+    return (
+        <TouchableHighlight underlayColor={'#FFF'} onPress={() => props.setCurrMenu(props.menu)}>
+            <View style={[styles.menu, props.currMenu == props.menu ? styles.currMenu : '']}>
+                {props.currMenu == props.menu ?
+                    (<Text style={[styles.iconFont, styles.menuText, styles.currMenuText]}>{props.icon}{props.title}</Text>)
+                    : (<Text style={[styles.iconFont, styles.menuText,]}>{props.icon}{props.title}</Text>)
+                }
+            </View>
+        </TouchableHighlight>
+    )
+}
+
+MenuItem.propTypes = {
+    menu: PropTypes.string.isRequired,
+    setCurrMenu: PropTypes.func.isRequired,
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    currMenu: PropTypes.string,
+}
+
+
+
+
+mapStateToProps = (state) => {
+
+    return {
+        currMenu: state.app.currMenu,
+    }
+}
+mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrMenu: (menu) => dispatch(setCurrMenu(menu))
+    }
+}
+const MenuItemA = connect(mapStateToProps, mapDispatchToProps)(MenuItem);
+
+
+const MainNav = (props) => {
+    return (
+        <View style={styles.mainNav}>
+            <View style={styles.searchBox}>
+                <Text onPress={() => props.navigation.toggleDrawer()}
+                      style={styles.iconFont}>&#xe607;</Text>
+                <Text style={{fontSize: rx(38)}}>郑州市</Text>
+                <Text style={styles.iconFont}>&#xe615;</Text>
+            </View>
+            <View style={styles.mainMenu}>
+                <MenuItemA menu={'FF'} title={'飞防'} icon={'\ue636'} />
+                <MenuItemA menu={'NJ'} title={'农机'} icon={'\ue637'} />
+                <MenuItemA menu={'ZJ'} title={'专家'} icon={'\ue639'} />
+                <MenuItemA menu={'NZ'} title={'农资'} icon={'\ue638'} />
+            </View>
+        </View>
+
+    )
+}
+
+
+export default MainNav
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    mainNav: {
+        width: width,
+        height: rx(198),
+        position: 'absolute',
+        top: 0,
+        backgroundColor: '#FFF',
+
+    },
+    searchBox: {
+        marginHorizontal: rx(30),
+        height: rx(88),
+        flexDirection: 'row',
+        marginTop: rx(40),
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    mainMenu: {
+        flexDirection: 'row',
+        height: rx(70),
+        alignItems: 'center',
+        marginHorizontal: rx(30),
+    },
+
+    menu: {
+        marginRight: rx(68),
+        paddingVertical: rx(11),
+        backgroundColor: '#FFF'
+    },
+    menuText: {
+        fontSize: rx(30)
+    },
+    currMenuText: {
+        color: '#fff'
+    },
+    currMenu: {
+        backgroundColor: '#00AF00',
+        paddingHorizontal: rx(18),
+        borderRadius: rx(35),
+    },
+    iconFont: {
+        fontFamily: 'iconfont',
+        fontSize: rx(42),
+
+    }
+
+});
+

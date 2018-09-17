@@ -1,0 +1,26 @@
+import {handleActions } from 'redux-actions'
+
+const initialState = {
+    loginInDoing:false,
+    loginIn:false
+}
+
+
+export default auth = handleActions({
+    LOGIN_IN_START: (state,action ) => {
+        return {
+        ...state,loginInDoing: true,loginIn:false,
+    }},
+    LOGIN_IN_SUCCESS: (state ,action ) => {
+        return {
+            ...state,
+            loginInDoing:false,
+            loginIn:true,
+            accessToken:action.payload.accessToken,
+            refreshToken:action.payload.refreshToken,
+        }},
+    LOGIN_IN_ERROR: (state,action ) => ({
+        ...state,
+        loginInDoing:false,
+    })
+},initialState )
