@@ -1,4 +1,4 @@
-# 呱呱农服APP ReactNative
+#  ReactNative
 ## 技术栈
 react + react-native + redux + react-redux + redux-form + axios + RESTful + ...
 ## 项目运行
